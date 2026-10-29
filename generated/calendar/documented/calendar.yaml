@@ -1,0 +1,219 @@
+$defs:
+  ResponseStatus:
+    description: An attendee's reply to an invitation.
+    type: string
+    oneOf:
+    - const: NEEDS_ACTION
+      description: Has not replied.
+    - const: ACCEPTED
+    - const: DECLINED
+    - const: TENTATIVE
+  Attendee:
+    description: A person invited to an event.
+    type: object
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      response:
+        $ref: '#/$defs/ResponseStatus'
+      optional:
+        type: boolean
+        description: Whether attendance is optional.
+    required:
+    - email
+    - response
+    - optional
+  Event:
+    description: A calendar event.
+    type: object
+    properties:
+      id:
+        type: string
+      title:
+        type: string
+      description:
+        type: string
+      location:
+        type: string
+        description: Room name, address, or meeting URL.
+      start:
+        type: string
+        format: date-time
+      end:
+        type: string
+        format: date-time
+      attendees:
+        type: array
+        items:
+          $ref: '#/$defs/Attendee'
+      organizer:
+        type: string
+        description: Email of the organizer.
+    required:
+    - id
+    - title
+    - start
+    - end
+    - attendees
+    - organizer
+  TimeSlot:
+    description: A window of time when everyone is free.
+    type: object
+    properties:
+      start:
+        type: string
+        format: date-time
+      end:
+        type: string
+        format: date-time
+    required:
+    - start
+    - end
+  EventInput:
+    description: Fields for creating or updating an event.
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      location:
+        type: string
+      start:
+        type: string
+        format: date-time
+      end:
+        type: string
+        format: date-time
+      attendeeEmails:
+        type: array
+        items:
+          type: string
+        description: People to invite.
+    required:
+    - title
+    - start
+    - end
+    - attendeeEmails
+tools:
+- name: listEvents
+  description: List events that overlap a time range, soonest first.
+  input_schema:
+    type: object
+    properties:
+      start:
+        type: string
+        format: date-time
+        description: Start of the range, inclusive.
+      end:
+        type: string
+        format: date-time
+        description: End of the range, exclusive.
+      query:
+        type: string
+        description: Only return events whose title or description matches.
+      limit:
+        type: integer
+        description: Maximum number of events to return. Defaults to 50.
+    required:
+    - start
+    - end
+  output_schema:
+    type: array
+    items:
+      $ref: '#/$defs/Event'
+- name: getEvent
+  description: Fetch a single event by ID.
+  input_schema:
+    type: object
+    properties:
+      id:
+        type: string
+    required:
+    - id
+  output_schema:
+    $ref: '#/$defs/Event'
+- name: createEvent
+  description: Create an event and send invitations to its attendees.
+  input_schema:
+    type: object
+    properties:
+      event:
+        $ref: '#/$defs/EventInput'
+    required:
+    - event
+  output_schema:
+    $ref: '#/$defs/Event'
+- name: updateEvent
+  description: Replace an event's details. Attendees are notified of changes.
+  input_schema:
+    type: object
+    properties:
+      id:
+        type: string
+      event:
+        $ref: '#/$defs/EventInput'
+    required:
+    - id
+    - event
+  output_schema:
+    $ref: '#/$defs/Event'
+- name: deleteEvent
+  description: Cancel an event and notify attendees. Returns false if it did not exist.
+  input_schema:
+    type: object
+    properties:
+      id:
+        type: string
+    required:
+    - id
+  output_schema:
+    type: boolean
+- name: respondToEvent
+  description: Reply to an invitation on behalf of the current user.
+  input_schema:
+    type: object
+    properties:
+      id:
+        type: string
+      response:
+        $ref: '#/$defs/ResponseStatus'
+      comment:
+        type: string
+        description: Optional note sent to the organizer.
+    required:
+    - id
+    - response
+  output_schema:
+    $ref: '#/$defs/Event'
+- name: findFreeTime
+  description: Find time slots when all attendees are free.
+  input_schema:
+    type: object
+    properties:
+      attendeeEmails:
+        type: array
+        items:
+          type: string
+      durationMinutes:
+        type: integer
+        description: Length of the meeting.
+      start:
+        type: string
+        format: date-time
+        description: Earliest acceptable start.
+      end:
+        type: string
+        format: date-time
+        description: Latest acceptable end.
+    required:
+    - attendeeEmails
+    - durationMinutes
+    - start
+    - end
+  output_schema:
+    type: array
+    items:
+      $ref: '#/$defs/TimeSlot'

@@ -1,0 +1,295 @@
+{
+  "$defs": {
+    "ResponseStatus": {
+      "type": "string",
+      "enum": [
+        "NEEDS_ACTION",
+        "ACCEPTED",
+        "DECLINED",
+        "TENTATIVE"
+      ]
+    },
+    "Attendee": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "response": {
+          "$ref": "#/$defs/ResponseStatus"
+        },
+        "optional": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "email",
+        "response",
+        "optional"
+      ]
+    },
+    "Event": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "attendees": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Attendee"
+          }
+        },
+        "organizer": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "start",
+        "end",
+        "attendees",
+        "organizer"
+      ]
+    },
+    "TimeSlot": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ]
+    },
+    "EventInput": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "attendeeEmails": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "title",
+        "start",
+        "end",
+        "attendeeEmails"
+      ]
+    }
+  },
+  "tools": [
+    {
+      "name": "listEvents",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "query": {
+            "type": "string"
+          },
+          "limit": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "start",
+          "end"
+        ]
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/Event"
+        }
+      }
+    },
+    {
+      "name": "getEvent",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "output_schema": {
+        "$ref": "#/$defs/Event"
+      }
+    },
+    {
+      "name": "createEvent",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "event": {
+            "$ref": "#/$defs/EventInput"
+          }
+        },
+        "required": [
+          "event"
+        ]
+      },
+      "output_schema": {
+        "$ref": "#/$defs/Event"
+      }
+    },
+    {
+      "name": "updateEvent",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "event": {
+            "$ref": "#/$defs/EventInput"
+          }
+        },
+        "required": [
+          "id",
+          "event"
+        ]
+      },
+      "output_schema": {
+        "$ref": "#/$defs/Event"
+      }
+    },
+    {
+      "name": "deleteEvent",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "output_schema": {
+        "type": "boolean"
+      }
+    },
+    {
+      "name": "respondToEvent",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "response": {
+            "$ref": "#/$defs/ResponseStatus"
+          },
+          "comment": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "response"
+        ]
+      },
+      "output_schema": {
+        "$ref": "#/$defs/Event"
+      }
+    },
+    {
+      "name": "findFreeTime",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "attendeeEmails": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "durationMinutes": {
+            "type": "integer"
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "attendeeEmails",
+          "durationMinutes",
+          "start",
+          "end"
+        ]
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/TimeSlot"
+        }
+      }
+    }
+  ]
+}

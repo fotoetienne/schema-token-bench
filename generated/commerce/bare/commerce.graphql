@@ -1,0 +1,59 @@
+scalar DateTime
+
+type Money {
+  amount: Float!
+  currency: String!
+}
+
+type Address {
+  line1: String!
+  line2: String
+  city: String!
+  region: String
+  postalCode: String!
+  country: String!
+}
+
+type Customer {
+  id: ID!
+  email: String!
+  name: String!
+  phone: String
+  shippingAddress: Address
+  createdAt: DateTime!
+}
+
+type Product {
+  id: ID!
+  sku: String!
+  title: String!
+  description: String
+  price: Money!
+  tags: [String!]!
+  inStock: Boolean!
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+type LineItem {
+  product: Product!
+  quantity: Int!
+  unitPrice: Money!
+}
+
+type Order {
+  id: ID!
+  customer: Customer!
+  items: [LineItem!]!
+  status: OrderStatus!
+  total: Money!
+  notes: String
+  placedAt: DateTime!
+  shippedAt: DateTime
+}

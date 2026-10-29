@@ -1,0 +1,30 @@
+[project]
+name = "schema-token-bench"
+version = "0.1.0"
+description = "How many tokens does it cost to describe the same schema in JSON Schema, GraphQL, Protobuf, TypeScript, and Python?"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=0.70",
+    "pyyaml>=6",
+    "tiktoken>=0.9",
+]
+
+[project.scripts]
+schema-token-bench = "schema_token_bench.cli:main"
+
+[dependency-groups]
+dev = [
+    "graphql-core>=3.2",
+    "jsonschema>=4.23",
+    "pytest>=8",
+    "ruff>=0.6",
+]
+
+[tool.ruff]
+line-length = 110
+
+[build-system]
+requires = ["uv_build>=0.8.3,<0.9.0"]
+build-backend = "uv_build"

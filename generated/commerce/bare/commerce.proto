@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package commerce;
+
+import "google/protobuf/timestamp.proto";
+
+message Money {
+  double amount = 1;
+  string currency = 2;
+}
+
+message Address {
+  string line1 = 1;
+  string line2 = 2;
+  string city = 3;
+  string region = 4;
+  string postal_code = 5;
+  string country = 6;
+}
+
+message Customer {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  string phone = 4;
+  Address shipping_address = 5;
+  google.protobuf.Timestamp created_at = 6;
+}
+
+message Product {
+  string id = 1;
+  string sku = 2;
+  string title = 3;
+  string description = 4;
+  Money price = 5;
+  repeated string tags = 6;
+  bool in_stock = 7;
+}
+
+enum OrderStatus {
+  ORDER_STATUS_UNSPECIFIED = 0;
+  ORDER_STATUS_PENDING = 1;
+  ORDER_STATUS_PAID = 2;
+  ORDER_STATUS_SHIPPED = 3;
+  ORDER_STATUS_DELIVERED = 4;
+  ORDER_STATUS_CANCELLED = 5;
+}
+
+message LineItem {
+  Product product = 1;
+  int32 quantity = 2;
+  Money unit_price = 3;
+}
+
+message Order {
+  string id = 1;
+  Customer customer = 2;
+  repeated LineItem items = 3;
+  OrderStatus status = 4;
+  Money total = 5;
+  string notes = 6;
+  google.protobuf.Timestamp placed_at = 7;
+  google.protobuf.Timestamp shipped_at = 8;
+}

@@ -1,0 +1,380 @@
+[
+  {
+    "fixture": "user",
+    "variant": "documented",
+    "format": "jsonschema",
+    "path": "generated/user/documented/user.json",
+    "bytes": 794,
+    "tokens:claude-opus-5-5": 243,
+    "tokens:o200k_base": 187
+  },
+  {
+    "fixture": "user",
+    "variant": "documented",
+    "format": "jsonschema-min",
+    "path": "generated/user/documented/user.min.json",
+    "bytes": 475,
+    "tokens:claude-opus-5-5": 162,
+    "tokens:o200k_base": 105
+  },
+  {
+    "fixture": "user",
+    "variant": "documented",
+    "format": "jsonschema-yaml",
+    "path": "generated/user/documented/user.yaml",
+    "bytes": 555,
+    "tokens:claude-opus-5-5": 155,
+    "tokens:o200k_base": 123
+  },
+  {
+    "fixture": "user",
+    "variant": "documented",
+    "format": "graphql",
+    "path": "generated/user/documented/user.graphql",
+    "bytes": 298,
+    "tokens:claude-opus-5-5": 118,
+    "tokens:o200k_base": 82
+  },
+  {
+    "fixture": "user",
+    "variant": "documented",
+    "format": "protobuf",
+    "path": "generated/user/documented/user.proto",
+    "bytes": 380,
+    "tokens:claude-opus-5-5": 147,
+    "tokens:o200k_base": 99
+  },
+  {
+    "fixture": "user",
+    "variant": "documented",
+    "format": "typescript",
+    "path": "generated/user/documented/user.d.ts",
+    "bytes": 357,
+    "tokens:claude-opus-5-5": 136,
+    "tokens:o200k_base": 92
+  },
+  {
+    "fixture": "user",
+    "variant": "documented",
+    "format": "python",
+    "path": "generated/user/documented/user.py",
+    "bytes": 368,
+    "tokens:claude-opus-5-5": 129,
+    "tokens:o200k_base": 87
+  },
+  {
+    "fixture": "user",
+    "variant": "bare",
+    "format": "jsonschema",
+    "path": "generated/user/bare/user.json",
+    "bytes": 490,
+    "tokens:claude-opus-5-5": 168,
+    "tokens:o200k_base": 129
+  },
+  {
+    "fixture": "user",
+    "variant": "bare",
+    "format": "jsonschema-min",
+    "path": "generated/user/bare/user.min.json",
+    "bytes": 239,
+    "tokens:claude-opus-5-5": 105,
+    "tokens:o200k_base": 64
+  },
+  {
+    "fixture": "user",
+    "variant": "bare",
+    "format": "jsonschema-yaml",
+    "path": "generated/user/bare/user.yaml",
+    "bytes": 293,
+    "tokens:claude-opus-5-5": 93,
+    "tokens:o200k_base": 77
+  },
+  {
+    "fixture": "user",
+    "variant": "bare",
+    "format": "graphql",
+    "path": "generated/user/bare/user.graphql",
+    "bytes": 107,
+    "tokens:claude-opus-5-5": 49,
+    "tokens:o200k_base": 35
+  },
+  {
+    "fixture": "user",
+    "variant": "bare",
+    "format": "protobuf",
+    "path": "generated/user/bare/user.proto",
+    "bytes": 212,
+    "tokens:claude-opus-5-5": 92,
+    "tokens:o200k_base": 61
+  },
+  {
+    "fixture": "user",
+    "variant": "bare",
+    "format": "typescript",
+    "path": "generated/user/bare/user.d.ts",
+    "bytes": 131,
+    "tokens:claude-opus-5-5": 53,
+    "tokens:o200k_base": 37
+  },
+  {
+    "fixture": "user",
+    "variant": "bare",
+    "format": "python",
+    "path": "generated/user/bare/user.py",
+    "bytes": 202,
+    "tokens:claude-opus-5-5": 77,
+    "tokens:o200k_base": 50
+  },
+  {
+    "fixture": "commerce",
+    "variant": "documented",
+    "format": "jsonschema",
+    "path": "generated/commerce/documented/commerce.json",
+    "bytes": 5379,
+    "tokens:claude-opus-5-5": 1762,
+    "tokens:o200k_base": 1277
+  },
+  {
+    "fixture": "commerce",
+    "variant": "documented",
+    "format": "jsonschema-min",
+    "path": "generated/commerce/documented/commerce.min.json",
+    "bytes": 3210,
+    "tokens:claude-opus-5-5": 1235,
+    "tokens:o200k_base": 759
+  },
+  {
+    "fixture": "commerce",
+    "variant": "documented",
+    "format": "jsonschema-yaml",
+    "path": "generated/commerce/documented/commerce.yaml",
+    "bytes": 3756,
+    "tokens:claude-opus-5-5": 1223,
+    "tokens:o200k_base": 894
+  },
+  {
+    "fixture": "commerce",
+    "variant": "documented",
+    "format": "graphql",
+    "path": "generated/commerce/documented/commerce.graphql",
+    "bytes": 1851,
+    "tokens:claude-opus-5-5": 780,
+    "tokens:o200k_base": 509
+  },
+  {
+    "fixture": "commerce",
+    "variant": "documented",
+    "format": "protobuf",
+    "path": "generated/commerce/documented/commerce.proto",
+    "bytes": 2244,
+    "tokens:claude-opus-5-5": 977,
+    "tokens:o200k_base": 612
+  },
+  {
+    "fixture": "commerce",
+    "variant": "documented",
+    "format": "typescript",
+    "path": "generated/commerce/documented/commerce.d.ts",
+    "bytes": 2101,
+    "tokens:claude-opus-5-5": 869,
+    "tokens:o200k_base": 555
+  },
+  {
+    "fixture": "commerce",
+    "variant": "documented",
+    "format": "python",
+    "path": "generated/commerce/documented/commerce.py",
+    "bytes": 2104,
+    "tokens:claude-opus-5-5": 822,
+    "tokens:o200k_base": 543
+  },
+  {
+    "fixture": "commerce",
+    "variant": "bare",
+    "format": "jsonschema",
+    "path": "generated/commerce/bare/commerce.json",
+    "bytes": 3424,
+    "tokens:claude-opus-5-5": 1196,
+    "tokens:o200k_base": 869
+  },
+  {
+    "fixture": "commerce",
+    "variant": "bare",
+    "format": "jsonschema-min",
+    "path": "generated/commerce/bare/commerce.min.json",
+    "bytes": 1716,
+    "tokens:claude-opus-5-5": 778,
+    "tokens:o200k_base": 458
+  },
+  {
+    "fixture": "commerce",
+    "variant": "bare",
+    "format": "jsonschema-yaml",
+    "path": "generated/commerce/bare/commerce.yaml",
+    "bytes": 2155,
+    "tokens:claude-opus-5-5": 763,
+    "tokens:o200k_base": 573
+  },
+  {
+    "fixture": "commerce",
+    "variant": "bare",
+    "format": "graphql",
+    "path": "generated/commerce/bare/commerce.graphql",
+    "bytes": 777,
+    "tokens:claude-opus-5-5": 357,
+    "tokens:o200k_base": 234
+  },
+  {
+    "fixture": "commerce",
+    "variant": "bare",
+    "format": "protobuf",
+    "path": "generated/commerce/bare/commerce.proto",
+    "bytes": 1167,
+    "tokens:claude-opus-5-5": 568,
+    "tokens:o200k_base": 348
+  },
+  {
+    "fixture": "commerce",
+    "variant": "bare",
+    "format": "typescript",
+    "path": "generated/commerce/bare/commerce.d.ts",
+    "bytes": 850,
+    "tokens:claude-opus-5-5": 369,
+    "tokens:o200k_base": 236
+  },
+  {
+    "fixture": "commerce",
+    "variant": "bare",
+    "format": "python",
+    "path": "generated/commerce/bare/commerce.py",
+    "bytes": 1007,
+    "tokens:claude-opus-5-5": 414,
+    "tokens:o200k_base": 271
+  },
+  {
+    "fixture": "calendar",
+    "variant": "documented",
+    "format": "jsonschema",
+    "path": "generated/calendar/documented/calendar.json",
+    "bytes": 7394,
+    "tokens:claude-opus-5-5": 2414,
+    "tokens:o200k_base": 1733
+  },
+  {
+    "fixture": "calendar",
+    "variant": "documented",
+    "format": "jsonschema-min",
+    "path": "generated/calendar/documented/calendar.min.json",
+    "bytes": 4222,
+    "tokens:claude-opus-5-5": 1662,
+    "tokens:o200k_base": 980
+  },
+  {
+    "fixture": "calendar",
+    "variant": "documented",
+    "format": "jsonschema-yaml",
+    "path": "generated/calendar/documented/calendar.yaml",
+    "bytes": 4797,
+    "tokens:claude-opus-5-5": 1597,
+    "tokens:o200k_base": 1151
+  },
+  {
+    "fixture": "calendar",
+    "variant": "documented",
+    "format": "graphql",
+    "path": "generated/calendar/documented/calendar.graphql",
+    "bytes": 2150,
+    "tokens:claude-opus-5-5": 887,
+    "tokens:o200k_base": 556
+  },
+  {
+    "fixture": "calendar",
+    "variant": "documented",
+    "format": "protobuf",
+    "path": "generated/calendar/documented/calendar.proto",
+    "bytes": 3284,
+    "tokens:claude-opus-5-5": 1438,
+    "tokens:o200k_base": 804
+  },
+  {
+    "fixture": "calendar",
+    "variant": "documented",
+    "format": "typescript",
+    "path": "generated/calendar/documented/calendar.d.ts",
+    "bytes": 2437,
+    "tokens:claude-opus-5-5": 958,
+    "tokens:o200k_base": 592
+  },
+  {
+    "fixture": "calendar",
+    "variant": "documented",
+    "format": "python",
+    "path": "generated/calendar/documented/calendar.py",
+    "bytes": 2570,
+    "tokens:claude-opus-5-5": 956,
+    "tokens:o200k_base": 612
+  },
+  {
+    "fixture": "calendar",
+    "variant": "bare",
+    "format": "jsonschema",
+    "path": "generated/calendar/bare/calendar.json",
+    "bytes": 5657,
+    "tokens:claude-opus-5-5": 1918,
+    "tokens:o200k_base": 1383
+  },
+  {
+    "fixture": "calendar",
+    "variant": "bare",
+    "format": "jsonschema-min",
+    "path": "generated/calendar/bare/calendar.min.json",
+    "bytes": 2837,
+    "tokens:claude-opus-5-5": 1252,
+    "tokens:o200k_base": 715
+  },
+  {
+    "fixture": "calendar",
+    "variant": "bare",
+    "format": "jsonschema-yaml",
+    "path": "generated/calendar/bare/calendar.yaml",
+    "bytes": 3363,
+    "tokens:claude-opus-5-5": 1191,
+    "tokens:o200k_base": 871
+  },
+  {
+    "fixture": "calendar",
+    "variant": "bare",
+    "format": "graphql",
+    "path": "generated/calendar/bare/calendar.graphql",
+    "bytes": 1057,
+    "tokens:claude-opus-5-5": 500,
+    "tokens:o200k_base": 303
+  },
+  {
+    "fixture": "calendar",
+    "variant": "bare",
+    "format": "protobuf",
+    "path": "generated/calendar/bare/calendar.proto",
+    "bytes": 2225,
+    "tokens:claude-opus-5-5": 1072,
+    "tokens:o200k_base": 568
+  },
+  {
+    "fixture": "calendar",
+    "variant": "bare",
+    "format": "typescript",
+    "path": "generated/calendar/bare/calendar.d.ts",
+    "bytes": 1248,
+    "tokens:claude-opus-5-5": 524,
+    "tokens:o200k_base": 317
+  },
+  {
+    "fixture": "calendar",
+    "variant": "bare",
+    "format": "python",
+    "path": "generated/calendar/bare/calendar.py",
+    "bytes": 1327,
+    "tokens:claude-opus-5-5": 548,
+    "tokens:o200k_base": 341
+  }
+]

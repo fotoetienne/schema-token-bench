@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+package calendar;
+
+import "google/protobuf/timestamp.proto";
+
+enum ResponseStatus {
+  RESPONSE_STATUS_UNSPECIFIED = 0;
+  RESPONSE_STATUS_NEEDS_ACTION = 1;
+  RESPONSE_STATUS_ACCEPTED = 2;
+  RESPONSE_STATUS_DECLINED = 3;
+  RESPONSE_STATUS_TENTATIVE = 4;
+}
+
+message Attendee {
+  string email = 1;
+  string name = 2;
+  ResponseStatus response = 3;
+  bool optional = 4;
+}
+
+message Event {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  string location = 4;
+  google.protobuf.Timestamp start = 5;
+  google.protobuf.Timestamp end = 6;
+  repeated Attendee attendees = 7;
+  string organizer = 8;
+}
+
+message TimeSlot {
+  google.protobuf.Timestamp start = 1;
+  google.protobuf.Timestamp end = 2;
+}
+
+message EventInput {
+  string title = 1;
+  string description = 2;
+  string location = 3;
+  google.protobuf.Timestamp start = 4;
+  google.protobuf.Timestamp end = 5;
+  repeated string attendee_emails = 6;
+}
+
+service CalendarService {
+  rpc ListEvents(ListEventsRequest) returns (ListEventsResponse);
+  rpc GetEvent(GetEventRequest) returns (Event);
+  rpc CreateEvent(CreateEventRequest) returns (Event);
+  rpc UpdateEvent(UpdateEventRequest) returns (Event);
+  rpc DeleteEvent(DeleteEventRequest) returns (DeleteEventResponse);
+  rpc RespondToEvent(RespondToEventRequest) returns (Event);
+  rpc FindFreeTime(FindFreeTimeRequest) returns (FindFreeTimeResponse);
+}
+
+message ListEventsRequest {
+  google.protobuf.Timestamp start = 1;
+  google.protobuf.Timestamp end = 2;
+  string query = 3;
+  int32 limit = 4;
+}
+
+message ListEventsResponse {
+  repeated Event events = 1;
+}
+
+message GetEventRequest {
+  string id = 1;
+}
+
+message CreateEventRequest {
+  EventInput event = 1;
+}
+
+message UpdateEventRequest {
+  string id = 1;
+  EventInput event = 2;
+}
+
+message DeleteEventRequest {
+  string id = 1;
+}
+
+message DeleteEventResponse {
+  bool result = 1;
+}
+
+message RespondToEventRequest {
+  string id = 1;
+  ResponseStatus response = 2;
+  string comment = 3;
+}
+
+message FindFreeTimeRequest {
+  repeated string attendee_emails = 1;
+  int32 duration_minutes = 2;
+  google.protobuf.Timestamp start = 3;
+  google.protobuf.Timestamp end = 4;
+}
+
+message FindFreeTimeResponse {
+  repeated TimeSlot time_slots = 1;
+}

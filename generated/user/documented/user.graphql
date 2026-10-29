@@ -1,0 +1,16 @@
+"ISO 8601 date-time string."
+scalar DateTime
+
+"A registered user account."
+type User {
+  "Unique identifier."
+  id: ID!
+  "Display name."
+  name: String!
+  "Primary email address, if verified."
+  email: String
+  "Age in years."
+  age: Int
+  "When the account was created."
+  createdAt: DateTime!
+}

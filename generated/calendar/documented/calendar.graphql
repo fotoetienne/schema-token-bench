@@ -1,0 +1,93 @@
+"ISO 8601 date-time string."
+scalar DateTime
+
+"An attendee's reply to an invitation."
+enum ResponseStatus {
+  "Has not replied."
+  NEEDS_ACTION
+  ACCEPTED
+  DECLINED
+  TENTATIVE
+}
+
+"A person invited to an event."
+type Attendee {
+  email: String!
+  name: String
+  response: ResponseStatus!
+  "Whether attendance is optional."
+  optional: Boolean!
+}
+
+"A calendar event."
+type Event {
+  id: ID!
+  title: String!
+  description: String
+  "Room name, address, or meeting URL."
+  location: String
+  start: DateTime!
+  end: DateTime!
+  attendees: [Attendee!]!
+  "Email of the organizer."
+  organizer: String!
+}
+
+"A window of time when everyone is free."
+type TimeSlot {
+  start: DateTime!
+  end: DateTime!
+}
+
+"Fields for creating or updating an event."
+input EventInput {
+  title: String!
+  description: String
+  location: String
+  start: DateTime!
+  end: DateTime!
+  "People to invite."
+  attendeeEmails: [String!]!
+}
+
+type Query {
+  "List events that overlap a time range, soonest first."
+  listEvents(
+    "Start of the range, inclusive."
+    start: DateTime!
+    "End of the range, exclusive."
+    end: DateTime!
+    "Only return events whose title or description matches."
+    query: String
+    "Maximum number of events to return. Defaults to 50."
+    limit: Int
+  ): [Event!]!
+  "Fetch a single event by ID."
+  getEvent(id: ID!): Event!
+  "Find time slots when all attendees are free."
+  findFreeTime(
+    attendeeEmails: [String!]!
+    "Length of the meeting."
+    durationMinutes: Int!
+    "Earliest acceptable start."
+    start: DateTime!
+    "Latest acceptable end."
+    end: DateTime!
+  ): [TimeSlot!]!
+}
+
+type Mutation {
+  "Create an event and send invitations to its attendees."
+  createEvent(event: EventInput!): Event!
+  "Replace an event's details. Attendees are notified of changes."
+  updateEvent(id: ID!, event: EventInput!): Event!
+  "Cancel an event and notify attendees. Returns false if it did not exist."
+  deleteEvent(id: ID!): Boolean!
+  "Reply to an invitation on behalf of the current user."
+  respondToEvent(
+    id: ID!
+    response: ResponseStatus!
+    "Optional note sent to the organizer."
+    comment: String
+  ): Event!
+}

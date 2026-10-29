@@ -1,0 +1,92 @@
+"ISO 8601 date-time string."
+scalar DateTime
+
+"An amount of money in a specific currency."
+type Money {
+  "Decimal amount, e.g. 19.99."
+  amount: Float!
+  "ISO 4217 currency code, e.g. USD."
+  currency: String!
+}
+
+"A postal address."
+type Address {
+  "Street address."
+  line1: String!
+  "Apartment, suite, or unit."
+  line2: String
+  city: String!
+  "State, province, or region."
+  region: String
+  postalCode: String!
+  "ISO 3166-1 alpha-2 country code."
+  country: String!
+}
+
+"A person who places orders."
+type Customer {
+  id: ID!
+  email: String!
+  "Full name."
+  name: String!
+  "Phone number in E.164 format."
+  phone: String
+  "Default shipping address."
+  shippingAddress: Address
+  createdAt: DateTime!
+}
+
+"An item available for sale."
+type Product {
+  id: ID!
+  "Stock keeping unit."
+  sku: String!
+  title: String!
+  "Long-form description; may contain Markdown."
+  description: String
+  "Current list price."
+  price: Money!
+  "Free-form labels used for search."
+  tags: [String!]!
+  "Whether at least one unit is available."
+  inStock: Boolean!
+}
+
+"Lifecycle state of an order."
+enum OrderStatus {
+  "Created but not yet paid."
+  PENDING
+  "Payment captured."
+  PAID
+  "Handed to the carrier."
+  SHIPPED
+  "Confirmed delivered."
+  DELIVERED
+  "Cancelled before shipping."
+  CANCELLED
+}
+
+"One product line within an order."
+type LineItem {
+  product: Product!
+  "Number of units; at least 1."
+  quantity: Int!
+  "Price per unit at time of purchase."
+  unitPrice: Money!
+}
+
+"A customer's purchase."
+type Order {
+  id: ID!
+  customer: Customer!
+  "Products in the order; never empty."
+  items: [LineItem!]!
+  status: OrderStatus!
+  "Sum of all line items plus tax and shipping."
+  total: Money!
+  "Free-text instructions from the customer."
+  notes: String
+  placedAt: DateTime!
+  "Set once status becomes SHIPPED."
+  shippedAt: DateTime
+}

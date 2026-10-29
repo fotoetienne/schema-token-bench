@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package user;
+
+import "google/protobuf/timestamp.proto";
+
+// A registered user account.
+message User {
+  // Unique identifier.
+  string id = 1;
+  // Display name.
+  string name = 2;
+  // Primary email address, if verified.
+  string email = 3;
+  // Age in years.
+  int32 age = 4;
+  // When the account was created.
+  google.protobuf.Timestamp created_at = 5;
+}

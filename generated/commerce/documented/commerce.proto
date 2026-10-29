@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package commerce;
+
+import "google/protobuf/timestamp.proto";
+
+// An amount of money in a specific currency.
+message Money {
+  // Decimal amount, e.g. 19.99.
+  double amount = 1;
+  // ISO 4217 currency code, e.g. USD.
+  string currency = 2;
+}
+
+// A postal address.
+message Address {
+  // Street address.
+  string line1 = 1;
+  // Apartment, suite, or unit.
+  string line2 = 2;
+  string city = 3;
+  // State, province, or region.
+  string region = 4;
+  string postal_code = 5;
+  // ISO 3166-1 alpha-2 country code.
+  string country = 6;
+}
+
+// A person who places orders.
+message Customer {
+  string id = 1;
+  string email = 2;
+  // Full name.
+  string name = 3;
+  // Phone number in E.164 format.
+  string phone = 4;
+  // Default shipping address.
+  Address shipping_address = 5;
+  google.protobuf.Timestamp created_at = 6;
+}
+
+// An item available for sale.
+message Product {
+  string id = 1;
+  // Stock keeping unit.
+  string sku = 2;
+  string title = 3;
+  // Long-form description; may contain Markdown.
+  string description = 4;
+  // Current list price.
+  Money price = 5;
+  // Free-form labels used for search.
+  repeated string tags = 6;
+  // Whether at least one unit is available.
+  bool in_stock = 7;
+}
+
+// Lifecycle state of an order.
+enum OrderStatus {
+  ORDER_STATUS_UNSPECIFIED = 0;
+  // Created but not yet paid.
+  ORDER_STATUS_PENDING = 1;
+  // Payment captured.
+  ORDER_STATUS_PAID = 2;
+  // Handed to the carrier.
+  ORDER_STATUS_SHIPPED = 3;
+  // Confirmed delivered.
+  ORDER_STATUS_DELIVERED = 4;
+  // Cancelled before shipping.
+  ORDER_STATUS_CANCELLED = 5;
+}
+
+// One product line within an order.
+message LineItem {
+  Product product = 1;
+  // Number of units; at least 1.
+  int32 quantity = 2;
+  // Price per unit at time of purchase.
+  Money unit_price = 3;
+}
+
+// A customer's purchase.
+message Order {
+  string id = 1;
+  Customer customer = 2;
+  // Products in the order; never empty.
+  repeated LineItem items = 3;
+  OrderStatus status = 4;
+  // Sum of all line items plus tax and shipping.
+  Money total = 5;
+  // Free-text instructions from the customer.
+  string notes = 6;
+  google.protobuf.Timestamp placed_at = 7;
+  // Set once status becomes SHIPPED.
+  google.protobuf.Timestamp shipped_at = 8;
+}

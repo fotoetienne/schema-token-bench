@@ -1,0 +1,36 @@
+{
+  "$defs": {
+    "User": {
+      "description": "A registered user account.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier."
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name."
+        },
+        "email": {
+          "type": "string",
+          "description": "Primary email address, if verified."
+        },
+        "age": {
+          "type": "integer",
+          "description": "Age in years."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the account was created."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "createdAt"
+      ]
+    }
+  }
+}

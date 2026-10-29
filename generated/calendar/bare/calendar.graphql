@@ -1,0 +1,63 @@
+scalar DateTime
+
+enum ResponseStatus {
+  NEEDS_ACTION
+  ACCEPTED
+  DECLINED
+  TENTATIVE
+}
+
+type Attendee {
+  email: String!
+  name: String
+  response: ResponseStatus!
+  optional: Boolean!
+}
+
+type Event {
+  id: ID!
+  title: String!
+  description: String
+  location: String
+  start: DateTime!
+  end: DateTime!
+  attendees: [Attendee!]!
+  organizer: String!
+}
+
+type TimeSlot {
+  start: DateTime!
+  end: DateTime!
+}
+
+input EventInput {
+  title: String!
+  description: String
+  location: String
+  start: DateTime!
+  end: DateTime!
+  attendeeEmails: [String!]!
+}
+
+type Query {
+  listEvents(
+    start: DateTime!
+    end: DateTime!
+    query: String
+    limit: Int
+  ): [Event!]!
+  getEvent(id: ID!): Event!
+  findFreeTime(
+    attendeeEmails: [String!]!
+    durationMinutes: Int!
+    start: DateTime!
+    end: DateTime!
+  ): [TimeSlot!]!
+}
+
+type Mutation {
+  createEvent(event: EventInput!): Event!
+  updateEvent(id: ID!, event: EventInput!): Event!
+  deleteEvent(id: ID!): Boolean!
+  respondToEvent(id: ID!, response: ResponseStatus!, comment: String): Event!
+}

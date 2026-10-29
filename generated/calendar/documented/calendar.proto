@@ -1,0 +1,129 @@
+syntax = "proto3";
+
+package calendar;
+
+import "google/protobuf/timestamp.proto";
+
+// An attendee's reply to an invitation.
+enum ResponseStatus {
+  RESPONSE_STATUS_UNSPECIFIED = 0;
+  // Has not replied.
+  RESPONSE_STATUS_NEEDS_ACTION = 1;
+  RESPONSE_STATUS_ACCEPTED = 2;
+  RESPONSE_STATUS_DECLINED = 3;
+  RESPONSE_STATUS_TENTATIVE = 4;
+}
+
+// A person invited to an event.
+message Attendee {
+  string email = 1;
+  string name = 2;
+  ResponseStatus response = 3;
+  // Whether attendance is optional.
+  bool optional = 4;
+}
+
+// A calendar event.
+message Event {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  // Room name, address, or meeting URL.
+  string location = 4;
+  google.protobuf.Timestamp start = 5;
+  google.protobuf.Timestamp end = 6;
+  repeated Attendee attendees = 7;
+  // Email of the organizer.
+  string organizer = 8;
+}
+
+// A window of time when everyone is free.
+message TimeSlot {
+  google.protobuf.Timestamp start = 1;
+  google.protobuf.Timestamp end = 2;
+}
+
+// Fields for creating or updating an event.
+message EventInput {
+  string title = 1;
+  string description = 2;
+  string location = 3;
+  google.protobuf.Timestamp start = 4;
+  google.protobuf.Timestamp end = 5;
+  // People to invite.
+  repeated string attendee_emails = 6;
+}
+
+service CalendarService {
+  // List events that overlap a time range, soonest first.
+  rpc ListEvents(ListEventsRequest) returns (ListEventsResponse);
+  // Fetch a single event by ID.
+  rpc GetEvent(GetEventRequest) returns (Event);
+  // Create an event and send invitations to its attendees.
+  rpc CreateEvent(CreateEventRequest) returns (Event);
+  // Replace an event's details. Attendees are notified of changes.
+  rpc UpdateEvent(UpdateEventRequest) returns (Event);
+  // Cancel an event and notify attendees. Returns false if it did not exist.
+  rpc DeleteEvent(DeleteEventRequest) returns (DeleteEventResponse);
+  // Reply to an invitation on behalf of the current user.
+  rpc RespondToEvent(RespondToEventRequest) returns (Event);
+  // Find time slots when all attendees are free.
+  rpc FindFreeTime(FindFreeTimeRequest) returns (FindFreeTimeResponse);
+}
+
+message ListEventsRequest {
+  // Start of the range, inclusive.
+  google.protobuf.Timestamp start = 1;
+  // End of the range, exclusive.
+  google.protobuf.Timestamp end = 2;
+  // Only return events whose title or description matches.
+  string query = 3;
+  // Maximum number of events to return. Defaults to 50.
+  int32 limit = 4;
+}
+
+message ListEventsResponse {
+  repeated Event events = 1;
+}
+
+message GetEventRequest {
+  string id = 1;
+}
+
+message CreateEventRequest {
+  EventInput event = 1;
+}
+
+message UpdateEventRequest {
+  string id = 1;
+  EventInput event = 2;
+}
+
+message DeleteEventRequest {
+  string id = 1;
+}
+
+message DeleteEventResponse {
+  bool result = 1;
+}
+
+message RespondToEventRequest {
+  string id = 1;
+  ResponseStatus response = 2;
+  // Optional note sent to the organizer.
+  string comment = 3;
+}
+
+message FindFreeTimeRequest {
+  repeated string attendee_emails = 1;
+  // Length of the meeting.
+  int32 duration_minutes = 2;
+  // Earliest acceptable start.
+  google.protobuf.Timestamp start = 3;
+  // Latest acceptable end.
+  google.protobuf.Timestamp end = 4;
+}
+
+message FindFreeTimeResponse {
+  repeated TimeSlot time_slots = 1;
+}
