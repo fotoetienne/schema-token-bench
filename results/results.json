@@ -64,6 +64,15 @@
   },
   {
     "fixture": "user",
+    "variant": "documented",
+    "format": "compact",
+    "path": "generated/user/documented/user.sdl",
+    "bytes": 221,
+    "tokens:claude-opus-5-5": 71,
+    "tokens:o200k_base": 50
+  },
+  {
+    "fixture": "user",
     "variant": "bare",
     "format": "jsonschema",
     "path": "generated/user/bare/user.json",
@@ -124,6 +133,15 @@
     "bytes": 202,
     "tokens:claude-opus-5-5": 77,
     "tokens:o200k_base": 50
+  },
+  {
+    "fixture": "user",
+    "variant": "bare",
+    "format": "compact",
+    "path": "generated/user/bare/user.sdl",
+    "bytes": 69,
+    "tokens:claude-opus-5-5": 26,
+    "tokens:o200k_base": 19
   },
   {
     "fixture": "commerce",
@@ -190,6 +208,15 @@
   },
   {
     "fixture": "commerce",
+    "variant": "documented",
+    "format": "compact",
+    "path": "generated/commerce/documented/commerce.sdl",
+    "bytes": 1599,
+    "tokens:claude-opus-5-5": 606,
+    "tokens:o200k_base": 382
+  },
+  {
+    "fixture": "commerce",
     "variant": "bare",
     "format": "jsonschema",
     "path": "generated/commerce/bare/commerce.json",
@@ -250,6 +277,15 @@
     "bytes": 1007,
     "tokens:claude-opus-5-5": 414,
     "tokens:o200k_base": 271
+  },
+  {
+    "fixture": "commerce",
+    "variant": "bare",
+    "format": "compact",
+    "path": "generated/commerce/bare/commerce.sdl",
+    "bytes": 602,
+    "tokens:claude-opus-5-5": 241,
+    "tokens:o200k_base": 147
   },
   {
     "fixture": "calendar",
@@ -316,6 +352,15 @@
   },
   {
     "fixture": "calendar",
+    "variant": "documented",
+    "format": "compact",
+    "path": "generated/calendar/documented/calendar.sdl",
+    "bytes": 1807,
+    "tokens:claude-opus-5-5": 675,
+    "tokens:o200k_base": 407
+  },
+  {
+    "fixture": "calendar",
     "variant": "bare",
     "format": "jsonschema",
     "path": "generated/calendar/bare/calendar.json",
@@ -376,5 +421,14 @@
     "bytes": 1327,
     "tokens:claude-opus-5-5": 548,
     "tokens:o200k_base": 341
+  },
+  {
+    "fixture": "calendar",
+    "variant": "bare",
+    "format": "compact",
+    "path": "generated/calendar/bare/calendar.sdl",
+    "bytes": 812,
+    "tokens:claude-opus-5-5": 333,
+    "tokens:o200k_base": 186
   }
 ]

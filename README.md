@@ -1,6 +1,6 @@
 # schema-token-bench
 
-How many tokens does it take to describe the same schema to an LLM in JSON Schema, GraphQL SDL, Protobuf/gRPC, TypeScript, or Python type hints?
+How many tokens does it take to describe the same schema to an LLM in JSON Schema, GraphQL SDL, Protobuf/gRPC, TypeScript, or Python type hints? And how small can a notation get if it's designed for token count?
 
 Each schema is defined once in a format-neutral model ([`fixtures.py`](src/schema_token_bench/fixtures.py)) and rendered into every format, so all formats describe the same types, fields, enums, and operations. Claude token counts come from the [`count_tokens`](https://docs.claude.com/en/docs/build-with-claude/token-counting) API, and OpenAI counts come from `tiktoken`.
 
@@ -11,6 +11,7 @@ Totals across the three fixtures. The ratio in parentheses is relative to pretty
 <!-- results:start -->
 | Format | Kind | Claude (claude-opus-5-5), documented | Claude (claude-opus-5-5), bare | OpenAI (o200k_base), documented | OpenAI (o200k_base), bare | Bytes, documented | Bytes, bare |
 |---|---|--:|--:|--:|--:|--:|--:|
+| Compact SDL | Prompt notation | 1,352 (0.31×) | 600 (0.18×) | 839 (0.26×) | 352 (0.15×) | 3,627 (0.27×) | 1,483 (0.15×) |
 | GraphQL SDL | API description | 1,785 (0.40×) | 906 (0.28×) | 1,147 (0.36×) | 572 (0.24×) | 4,299 (0.32×) | 1,941 (0.20×) |
 | Python type hints | Prompt notation | 1,907 (0.43×) | 1,039 (0.32×) | 1,242 (0.39×) | 662 (0.28×) | 5,042 (0.37×) | 2,536 (0.26×) |
 | TypeScript | Prompt notation | 1,963 (0.44×) | 946 (0.29×) | 1,239 (0.39×) | 590 (0.25×) | 4,895 (0.36×) | 2,229 (0.23×) |
@@ -24,13 +25,14 @@ Per-fixture tables: [`results/results.md`](results/results.md). Raw numbers: [`r
 
 ### Takeaways
 
-- **GraphQL SDL is the most compact format overall**, at about 0.4× the tokens of JSON Schema with docs and under 0.3× without. The two prompt notations, TypeScript and Python, are close behind, so a standard format costs nothing extra here.
+- **GraphQL SDL is the most compact existing format**, at about 0.4× the tokens of JSON Schema with docs and under 0.3× without. TypeScript and Python are close behind, so a standard format costs nothing extra here.
+- **A notation built for token count does about a quarter better than GraphQL.** [Compact SDL](#compact-sdl) takes 0.31× JSON Schema's tokens with docs and 0.18× without, 24% and 34% fewer than GraphQL. Nothing is known yet about how well models read it.
 - **Minifying JSON Schema or converting it to YAML saves a third to a half.** That's the whitespace and punctuation. The repeated `"type"`, `"properties"`, and `"required"` keys are still there.
 - **Protobuf falls in between.** Field numbers, prefixed enum values, and the request/response message every RPC needs all cost tokens. It falls furthest behind on the `calendar` tools fixture, at about 1.6× GraphQL's tokens.
 - **Descriptions narrow the gap.** Prose costs about the same in every format, so the more documented a schema is, the less the notation matters.
 - **The tokenizers mostly agree.** Claude's tokenizer produces more tokens than `o200k_base` for the same text, and the ranking is the same with one exception. YAML beats minified JSON under Claude, and minified JSON wins under `o200k_base`.
 
-My read: if you write the prompt yourself, describe types in GraphQL SDL or TypeScript. Models know both well, and they cost less than half as much as JSON Schema. If an API makes you send JSON Schema, as tool-calling APIs do, minifying it is the cheapest fix.
+My read: if you write the prompt yourself, describe types in GraphQL SDL or TypeScript. Models know both well, and they cost less than half as much as JSON Schema. Compact SDL is cheaper still, but until it's tested for comprehension it's a measurement of how much room is left, not a recommendation. If an API makes you send JSON Schema, as tool-calling APIs do, minifying it is the cheapest fix.
 
 ## What's being compared
 
@@ -40,7 +42,7 @@ My read: if you write the prompt yourself, describe types in GraphQL SDL or Type
 | `commerce` | Seven types with nested objects, lists, an enum, and optional fields |
 | `calendar` | Seven agent tools with parameters and return types, plus the types they use |
 
-The formats come in two kinds. **API description** formats are what people publish APIs in: JSON Schema, GraphQL SDL, and Protobuf. **Prompt notations** are TypeScript and Python type hints. Nobody publishes an API in them, but they're a common way to describe one to a model. OpenAI's open-weight gpt-oss models, for example, see tool definitions as TypeScript-style declarations in the [harmony format](https://cookbook.openai.com/articles/openai-harmony).
+The formats come in two kinds. **API description** formats are what people publish APIs in: JSON Schema, GraphQL SDL, and Protobuf. **Prompt notations** are TypeScript, Python type hints, and Compact SDL. Nobody publishes an API in them, but they're a common way to describe one to a model. OpenAI's open-weight gpt-oss models, for example, see tool definitions as TypeScript-style declarations in the [harmony format](https://cookbook.openai.com/articles/openai-harmony).
 
 | Format | Kind | Rendering |
 |---|---|---|
@@ -51,6 +53,7 @@ The formats come in two kinds. **API description** formats are what people publi
 | Protobuf / gRPC | API description | proto3 following the [style guide](https://protobuf.dev/programming-guides/style/): `snake_case` fields, prefixed enum values with an `UNSPECIFIED` zero, and a `FooRequest` message per RPC. |
 | TypeScript | Prompt notation | `interface`s, string-literal unions for enums, and `declare function name(args: {...}): Result` signatures. |
 | Python type hints | Prompt notation | `TypedDict` classes, `Literal` aliases for enums, and stub functions with Google-style docstrings. |
+| Compact SDL | Prompt notation | Designed for this benchmark. See [below](#compact-sdl). |
 
 The bare `user` fixture in three of them:
 
@@ -82,6 +85,52 @@ interface User {
 {"$defs":{"User":{"type":"object","properties":{"id":{"type":"string"},"name":{"type":"string"},"email":{"type":"string"},"age":{"type":"integer"},"createdAt":{"type":"string","format":"date-time"}},"required":["id","name","createdAt"]}}}
 ```
 
+## Compact SDL
+
+Compact SDL is a notation designed here to see how far below GraphQL a schema can go while staying readable without a legend. It borrows from GraphQL, TypeScript, Go, and harmony's tool rendering. Every choice was measured with Claude's tokenizer, and a choice stayed only if it saved tokens. Part of the documented `calendar` fixture:
+
+```
+# An attendee's reply to an invitation.
+ResponseStatus =
+| NEEDS_ACTION # Has not replied.
+| ACCEPTED
+| DECLINED
+| TENTATIVE
+
+# A person invited to an event.
+Attendee {
+email string
+name string?
+response ResponseStatus
+optional bool # Whether attendance is optional.
+}
+
+# Fetch a single event by ID.
+getEvent(id id) Event
+
+# Reply to an invitation on behalf of the current user.
+respondToEvent(
+id id
+response ResponseStatus
+comment string? # Optional note sent to the organizer.
+) Event
+```
+
+What each choice saves, measured by putting it back on the final format (Claude tokens, all three fixtures):
+
+| Choice | Instead of | Saved, documented | Saved, bare |
+|---|---|--:|--:|
+| `name type`, Go-style | `name: type` | 71 | 71 |
+| Lowercase built-in scalars, including `datetime` | GraphQL's `String`/`Boolean`/`ID` and a declared `DateTime` scalar | 100 | 58 |
+| No indentation, as in harmony | 2 spaces | 68 | 57 |
+| `?` marks optional | `!` marks required | 39 | 40 |
+| Field docs as trailing `# ...` | `# ...` on the line above | 43 | 0 |
+| No `type` keyword | `type User {` | 11 | 11 |
+
+Some things that didn't help under Claude's tokenizer: `str` instead of `string`, `"..."` or `//` instead of `#` for docs, and dropping blank lines between definitions all cost the same. `time` instead of `datetime` would save another 28 tokens, but it reads like a time of day. Putting small types on one line (`TimeSlot {start datetime end datetime}`) saves about 12% on the bare schemas and is harder to read, so it's not used.
+
+What it drops compared to GraphQL: the `input`/`type` split and the `Query`/`Mutation` split. TypeScript, Python, and harmony drop those too. No parser exists, so the test suite parses the output back into the schema model and checks that every type, field, optional marker, list, enum value, and doc survives.
+
 ## Methodology and fairness
 
 - **Idiomatic output.** Each format uses its own naming, so `createdAt` in GraphQL is `created_at` in Protobuf and Python. Docs use each format's syntax: `"..."` in GraphQL, `/** ... */` in TypeScript, `//` in Protobuf, docstrings and `#` comments in Python, and `description` in JSON Schema. Signatures go on one line if they fit in 80 columns and have no per-parameter docs, as prettier and black would format them.
@@ -90,7 +139,7 @@ interface User {
 - **No `$schema` or `additionalProperties: false`** in JSON Schema. LLM tool definitions usually leave out `$schema`. Strict tool use requires `additionalProperties: false`, which would make JSON Schema even bigger.
 - **Shared types aren't repeated.** MCP and most real tool definitions inline the referenced types into every tool's schema. That makes JSON Schema even larger than shown here.
 - **Message overhead is subtracted.** `count_tokens` counts a full user message, so the benchmark measures a one-token message once per model and subtracts the difference.
-- **Validity is tested.** [`tests/test_formats.py`](tests/test_formats.py) checks that every output is valid in its own language using the JSON Schema meta-schema, `graphql-core`, `protoc`, `tsc --strict`, and running the Python. It also checks that every type, field, enum value, and operation shows up in every format.
+- **Validity is tested.** [`tests/test_formats.py`](tests/test_formats.py) checks that every output is valid in its own language using the JSON Schema meta-schema, `graphql-core`, `protoc`, `tsc --strict`, and running the Python. Compact SDL has no parser, so the test reads it back into the schema model and compares. It also checks that every type, field, enum value, and operation shows up in every format.
 
 ## Running it
 

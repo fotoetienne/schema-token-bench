@@ -4,6 +4,7 @@
 
 | Format | Kind | Claude (claude-opus-5-5), documented | Claude (claude-opus-5-5), bare | OpenAI (o200k_base), documented | OpenAI (o200k_base), bare | Bytes, documented | Bytes, bare |
 |---|---|--:|--:|--:|--:|--:|--:|
+| Compact SDL | Prompt notation | 1,352 (0.31×) | 600 (0.18×) | 839 (0.26×) | 352 (0.15×) | 3,627 (0.27×) | 1,483 (0.15×) |
 | GraphQL SDL | API description | 1,785 (0.40×) | 906 (0.28×) | 1,147 (0.36×) | 572 (0.24×) | 4,299 (0.32×) | 1,941 (0.20×) |
 | Python type hints | Prompt notation | 1,907 (0.43×) | 1,039 (0.32×) | 1,242 (0.39×) | 662 (0.28×) | 5,042 (0.37×) | 2,536 (0.26×) |
 | TypeScript | Prompt notation | 1,963 (0.44×) | 946 (0.29×) | 1,239 (0.39×) | 590 (0.25×) | 4,895 (0.36×) | 2,229 (0.23×) |
@@ -18,6 +19,7 @@
 
 | Format | Kind | user (documented) | commerce (documented) | calendar (documented) | user (bare) | commerce (bare) | calendar (bare) | documented total | bare total | documented vs JSON Schema | bare vs JSON Schema |
 |---|---|---|---|---|---|---|---|---|---|---|---|
+| Compact SDL | Prompt notation | 71 | 606 | 675 | 26 | 241 | 333 | 1352 | 600 | 0.31× | 0.18× |
 | GraphQL SDL | API description | 118 | 780 | 887 | 49 | 357 | 500 | 1785 | 906 | 0.40× | 0.28× |
 | Python type hints | Prompt notation | 129 | 822 | 956 | 77 | 414 | 548 | 1907 | 1039 | 0.43× | 0.32× |
 | TypeScript | Prompt notation | 136 | 869 | 958 | 53 | 369 | 524 | 1963 | 946 | 0.44× | 0.29× |
@@ -30,6 +32,7 @@
 
 | Format | Kind | user (documented) | commerce (documented) | calendar (documented) | user (bare) | commerce (bare) | calendar (bare) | documented total | bare total | documented vs JSON Schema | bare vs JSON Schema |
 |---|---|---|---|---|---|---|---|---|---|---|---|
+| Compact SDL | Prompt notation | 50 | 382 | 407 | 19 | 147 | 186 | 839 | 352 | 0.26× | 0.15× |
 | GraphQL SDL | API description | 82 | 509 | 556 | 35 | 234 | 303 | 1147 | 572 | 0.36× | 0.24× |
 | TypeScript | Prompt notation | 92 | 555 | 592 | 37 | 236 | 317 | 1239 | 590 | 0.39× | 0.25× |
 | Python type hints | Prompt notation | 87 | 543 | 612 | 50 | 271 | 341 | 1242 | 662 | 0.39× | 0.28× |
@@ -42,6 +45,7 @@
 
 | Format | Kind | user (documented) | commerce (documented) | calendar (documented) | user (bare) | commerce (bare) | calendar (bare) | documented total | bare total | documented vs JSON Schema | bare vs JSON Schema |
 |---|---|---|---|---|---|---|---|---|---|---|---|
+| Compact SDL | Prompt notation | 221 | 1599 | 1807 | 69 | 602 | 812 | 3627 | 1483 | 0.27× | 0.15× |
 | GraphQL SDL | API description | 298 | 1851 | 2150 | 107 | 777 | 1057 | 4299 | 1941 | 0.32× | 0.20× |
 | TypeScript | Prompt notation | 357 | 2101 | 2437 | 131 | 850 | 1248 | 4895 | 2229 | 0.36× | 0.23× |
 | Python type hints | Prompt notation | 368 | 2104 | 2570 | 202 | 1007 | 1327 | 5042 | 2536 | 0.37× | 0.26× |
