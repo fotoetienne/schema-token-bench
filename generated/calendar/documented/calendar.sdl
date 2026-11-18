@@ -1,0 +1,77 @@
+# An attendee's reply to an invitation.
+ResponseStatus =
+| NEEDS_ACTION # Has not replied.
+| ACCEPTED
+| DECLINED
+| TENTATIVE
+
+# A person invited to an event.
+Attendee {
+email string
+name string?
+response ResponseStatus
+optional bool # Whether attendance is optional.
+}
+
+# A calendar event.
+Event {
+id id
+title string
+description string?
+location string? # Room name, address, or meeting URL.
+start datetime
+end datetime
+attendees Attendee[]
+organizer string # Email of the organizer.
+}
+
+# A window of time when everyone is free.
+TimeSlot {
+start datetime
+end datetime
+}
+
+# Fields for creating or updating an event.
+EventInput {
+title string
+description string?
+location string?
+start datetime
+end datetime
+attendeeEmails string[] # People to invite.
+}
+
+# List events that overlap a time range, soonest first.
+listEvents(
+start datetime # Start of the range, inclusive.
+end datetime # End of the range, exclusive.
+query string? # Only return events whose title or description matches.
+limit int? # Maximum number of events to return. Defaults to 50.
+) Event[]
+
+# Fetch a single event by ID.
+getEvent(id id) Event
+
+# Create an event and send invitations to its attendees.
+createEvent(event EventInput) Event
+
+# Replace an event's details. Attendees are notified of changes.
+updateEvent(id id, event EventInput) Event
+
+# Cancel an event and notify attendees. Returns false if it did not exist.
+deleteEvent(id id) bool
+
+# Reply to an invitation on behalf of the current user.
+respondToEvent(
+id id
+response ResponseStatus
+comment string? # Optional note sent to the organizer.
+) Event
+
+# Find time slots when all attendees are free.
+findFreeTime(
+attendeeEmails string[]
+durationMinutes int # Length of the meeting.
+start datetime # Earliest acceptable start.
+end datetime # Latest acceptable end.
+) TimeSlot[]

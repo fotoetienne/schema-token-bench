@@ -1,0 +1,63 @@
+# An amount of money in a specific currency.
+Money {
+amount float # Decimal amount, e.g. 19.99.
+currency string # ISO 4217 currency code, e.g. USD.
+}
+
+# A postal address.
+Address {
+line1 string # Street address.
+line2 string? # Apartment, suite, or unit.
+city string
+region string? # State, province, or region.
+postalCode string
+country string # ISO 3166-1 alpha-2 country code.
+}
+
+# A person who places orders.
+Customer {
+id id
+email string
+name string # Full name.
+phone string? # Phone number in E.164 format.
+shippingAddress Address? # Default shipping address.
+createdAt datetime
+}
+
+# An item available for sale.
+Product {
+id id
+sku string # Stock keeping unit.
+title string
+description string? # Long-form description; may contain Markdown.
+price Money # Current list price.
+tags string[] # Free-form labels used for search.
+inStock bool # Whether at least one unit is available.
+}
+
+# Lifecycle state of an order.
+OrderStatus =
+| PENDING # Created but not yet paid.
+| PAID # Payment captured.
+| SHIPPED # Handed to the carrier.
+| DELIVERED # Confirmed delivered.
+| CANCELLED # Cancelled before shipping.
+
+# One product line within an order.
+LineItem {
+product Product
+quantity int # Number of units; at least 1.
+unitPrice Money # Price per unit at time of purchase.
+}
+
+# A customer's purchase.
+Order {
+id id
+customer Customer
+items LineItem[] # Products in the order; never empty.
+status OrderStatus
+total Money # Sum of all line items plus tax and shipping.
+notes string? # Free-text instructions from the customer.
+placedAt datetime
+shippedAt datetime? # Set once status becomes SHIPPED.
+}

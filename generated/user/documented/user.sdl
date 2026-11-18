@@ -1,0 +1,8 @@
+# A registered user account.
+User {
+id id # Unique identifier.
+name string # Display name.
+email string? # Primary email address, if verified.
+age int? # Age in years.
+createdAt datetime # When the account was created.
+}

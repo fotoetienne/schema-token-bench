@@ -4,7 +4,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 
 from ..model import Schema
-from . import graphql, jsonschema, protobuf, python, typescript
+from . import compact, graphql, jsonschema, protobuf, python, typescript
 
 # Formats used to publish API definitions, vs. notations that are only a
 # cheaper way to describe an API inside a prompt.
@@ -29,6 +29,7 @@ FORMATS = [
     Format("protobuf", "Protobuf / gRPC", API, "proto", protobuf.emit),
     Format("typescript", "TypeScript", PROMPT, "d.ts", typescript.emit),
     Format("python", "Python type hints", PROMPT, "py", python.emit),
+    Format("compact", "Compact SDL", PROMPT, "sdl", compact.emit),
 ]
 
 BASELINE = "jsonschema"

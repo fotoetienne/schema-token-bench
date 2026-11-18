@@ -1,0 +1,7 @@
+User {
+id id
+name string
+email string?
+age int?
+createdAt datetime
+}

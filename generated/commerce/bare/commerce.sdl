@@ -1,0 +1,51 @@
+Money {
+amount float
+currency string
+}
+
+Address {
+line1 string
+line2 string?
+city string
+region string?
+postalCode string
+country string
+}
+
+Customer {
+id id
+email string
+name string
+phone string?
+shippingAddress Address?
+createdAt datetime
+}
+
+Product {
+id id
+sku string
+title string
+description string?
+price Money
+tags string[]
+inStock bool
+}
+
+OrderStatus = PENDING | PAID | SHIPPED | DELIVERED | CANCELLED
+
+LineItem {
+product Product
+quantity int
+unitPrice Money
+}
+
+Order {
+id id
+customer Customer
+items LineItem[]
+status OrderStatus
+total Money
+notes string?
+placedAt datetime
+shippedAt datetime?
+}

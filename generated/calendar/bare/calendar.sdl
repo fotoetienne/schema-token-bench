@@ -1,0 +1,52 @@
+ResponseStatus = NEEDS_ACTION | ACCEPTED | DECLINED | TENTATIVE
+
+Attendee {
+email string
+name string?
+response ResponseStatus
+optional bool
+}
+
+Event {
+id id
+title string
+description string?
+location string?
+start datetime
+end datetime
+attendees Attendee[]
+organizer string
+}
+
+TimeSlot {
+start datetime
+end datetime
+}
+
+EventInput {
+title string
+description string?
+location string?
+start datetime
+end datetime
+attendeeEmails string[]
+}
+
+listEvents(start datetime, end datetime, query string?, limit int?) Event[]
+
+getEvent(id id) Event
+
+createEvent(event EventInput) Event
+
+updateEvent(id id, event EventInput) Event
+
+deleteEvent(id id) bool
+
+respondToEvent(id id, response ResponseStatus, comment string?) Event
+
+findFreeTime(
+attendeeEmails string[]
+durationMinutes int
+start datetime
+end datetime
+) TimeSlot[]
